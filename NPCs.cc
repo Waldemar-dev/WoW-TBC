@@ -12,6 +12,10 @@ void WorstCaseSzenario::operator=(WorstCaseSzenario in) {
   dmg_per_hit = in.get_white_dmg();
   magic_school = in.get_magic_school();
   magic_dmg = in.get_magic_dmg();
+<<<<<<< HEAD
+  name = in.get_name();
+=======
+>>>>>>> 1f19022fff1f8b30e5fba0137501b842326a0525
 }
 
 void Boss::operator=(Boss boss_) {
