@@ -324,24 +324,15 @@ void convergent_gearing(Character *character, vector<vector<Gear>> *all_gear, un
                          // epic_blue_sta_gem,
                          // epic_red_dodge_gem,
                          // epic_yellow_def_gem,
-                         rare_green_sta_def_gem, rare_purple_sta_agi_gem, rare_purple_sta_dodge_gem, rare_purple_sta_sp_gem, meta1, meta2, meta3};
+                         rare_green_sta_def_gem, rare_purple_sta_agi_gem, rare_purple_sta_dodge_gem, rare_purple_sta_sp_gem, meta1, meta2 /*, meta3*/};
   double max_hp = character->get_eff_hp();
   double max_tps = character->get_tps();
   unsigned int max_i, max_j;
   for (uint i = 0; i < all_gear->size(); i++) {
     for (uint j = 0; j < all_gear->at(i).size(); j++) {
-      /*if (i == 14) {
-        cout << i << "\t" << j << endl;
-        cout << all_gear->at(i)[j].get_name() << endl;
-        cout << all_gear->at(i)[j].slot << endl;
-      }*/
       if (all_gear->at(i)[j].name == character->gear["Ring0"].name || all_gear->at(i)[j].name == character->gear["Ring1"].name || all_gear->at(i)[j].name == character->gear["Trinket0"].name ||
           all_gear->at(i)[j].name == character->gear["Trinket1"].name || character->gear[(*all_gear)[i][j].slot].get_name() == all_gear->at(i)[j].get_name()) {
         continue;
-      }
-      if (all_gear->at(i)[j].slot == "Mainhand") {
-        cout << i << "\t" << j << "\t" << all_gear->at(i)[j].get_name() << endl;
-        // is skipping gladiator weapon
       }
       Character temp = (*character);
 

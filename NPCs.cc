@@ -12,7 +12,6 @@ void WorstCaseSzenario::operator=(WorstCaseSzenario in) {
   dmg_per_hit = in.get_white_dmg();
   magic_school = in.get_magic_school();
   magic_dmg = in.get_magic_dmg();
-  name = in.get_name();
 }
 
 void Boss::operator=(Boss boss_) {
@@ -21,6 +20,7 @@ void Boss::operator=(Boss boss_) {
   abilities = boss_.get_abilities();
   worst_case = (*boss_.get_worst_case_szenario());
   set_lvl(boss_.get_lvl());
+  set_name(boss_.get_name());
 }
 
 Attumen::Attumen() {
@@ -77,4 +77,25 @@ PrinceMalchezaar::PrinceMalchezaar() {
   add_ability(thrash);
   get_worst_case_szenario()->set_dmg_per_hit(9288);
   get_worst_case_szenario()->set_n_hits(3);
+  get_worst_case_szenario()->set_magic_dmg("Fire", 600);
+}
+
+Hydros::Hydros() {
+  set_name("Hydros the Unstable");
+  primary_stats.health = 1540000;
+  primary_stats.attack_speed = 2.0;
+  set_prim_stats(primary_stats);
+  Ability frost_based_autoattack("Frost Based Autoattack", "Frost");
+  frost_based_autoattack.set_damage(5500);
+  frost_based_autoattack.set_casttime(2.0);
+  frost_based_autoattack.set_dps(5500.0 / 2.0);
+  add_ability(frost_based_autoattack);
+  Ability mark_of_hydros("Mark of Hydros", "Frost"); //+10%,25%,50%,100%,250%,500% frost damage, stacks
+  Ability water_tomb("Water Tomb", "Frost");         // 4 sec stun
+  water_tomb.set_damage(4500);
+  water_tomb.set_dot(true);
+  water_tomb.set_uptime(5);
+  water_tomb.set_cooldown(7);
+  double most_damage = (5500.0 / 2.0 + 4500.0 / 5.0) * 4.0 * 2.0;
+  get_worst_case_szenario()->set_magic_dmg("Frost", most_damage);
 }

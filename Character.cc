@@ -345,7 +345,9 @@ double Character::get_eff_hp(double time_in_seconds_) {
   double frost_based_melee = (time_in_seconds * hps + hp + stamina * 10) / ((1 - average_resistance("Frost")) * (1 + 5.6 / 100.0 - crit_chance_reduction) * (1 - get_avoidance() / 100.0));
   double magical_nature = (time_in_seconds * hps + hp + stamina * 10) / (1 - average_resistance("Nature"));
   double magical_shadow = (time_in_seconds * hps + hp + stamina * 10) / (1 - average_resistance("Shadow"));
+
   double result = physical;
+
   for (map<string, unsigned int>::iterator it = talents.begin(); it != talents.end(); it++) {
     if (it->first == "Improved Righteous Fury") {
       result /= (1.0 - 0.02 * it->second);
@@ -731,7 +733,7 @@ double Character::get_crush() {
   if (result < 0) {
     return 0;
   }
-  return min(result, 1 - get_avoidance() - get_block());
+  return min(result, 1 - get_avoidance() / 100.0 - get_block() / 100.0);
 }
 
 bool Character::survives_worst_case_szenario() {
@@ -744,7 +746,7 @@ bool Character::survives_worst_case_szenario() {
   double physical_dmg = (get_encounter().get_worst_case_szenario()->get_white_dmg() * factor * get_armor_reduction() - blocked_dmg) * get_encounter().get_worst_case_szenario()->get_n_hits();
   double magical_dmg = 0;
   if (get_encounter().get_worst_case_szenario()->get_magic_school() != "") {
-    magical_dmg = get_encounter().get_worst_case_szenario()->get_magic_dmg() * average_resistance(get_encounter().get_worst_case_szenario()->get_magic_school());
+    magical_dmg = get_encounter().get_worst_case_szenario()->get_magic_dmg() * (1 - average_resistance(get_encounter().get_worst_case_szenario()->get_magic_school())); // rework
   }
   unsigned int stamina = primary_stats.stamina + base_stats.stamina + bonus_prim_stats.stamina;
   unsigned int hp = primary_stats.health + base_stats.health + bonus_prim_stats.health;

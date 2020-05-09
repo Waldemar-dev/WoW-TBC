@@ -87,4 +87,13 @@ private:
   SecondaryStats secondary_stats;
 };
 
+class Hydros : public Boss {
+public:
+  Hydros();
+
+private:
+  PrimaryStats primary_stats;
+  SecondaryStats secondary_stats;
+};
+
 #endif
