@@ -280,11 +280,7 @@ vector<Gear> enchant_gear(vector<Gear> *in) {
 
 void convergent_gearing(Character *character, vector<vector<Gear>> *all_gear, unsigned int cycle = 0) {
   cout << "Iteration = " << cycle << endl;
-<<<<<<< HEAD
   cout << "Starting with " << character->get_eff_hp() << " effective HP and " << character->get_tps() << " TPS." << endl;
-=======
-  cout << "Starting with " << character->get_eff_hp() << " effective HP." << endl;
->>>>>>> 1f19022fff1f8b30e5fba0137501b842326a0525
   if (cycle > 50) {
     cout << "aborting condition reached" << endl;
     cout << character->get_eff_hp() << endl;
@@ -362,29 +358,16 @@ void convergent_gearing(Character *character, vector<vector<Gear>> *all_gear, un
       double temp_eff_hp = temp.get_eff_hp();
       double temp_tps = temp.get_tps();
       double temp_crit_immunity = temp.red_chance_to_get_crit();
-<<<<<<< HEAD
       if (temp_eff_hp > max_hp && temp_crit_immunity >= 5.6 && !temp.survives_worst_case_szenario() && !character->survives_worst_case_szenario()) {
-        cout << "case 1" << endl;
-=======
-      if (temp_eff_hp > max_hp && temp_crit_immunity >= 5.6 && !temp.survives_worst_case_szenario()) {
->>>>>>> 1f19022fff1f8b30e5fba0137501b842326a0525
         max_i = i;
         max_j = j;
         max_hp = temp_eff_hp;
         max_tps = temp_tps;
       } else if (temp_eff_hp == max_hp && temp_tps > max_tps && temp_crit_immunity >= 5.6) {
-<<<<<<< HEAD
-        cout << "case 2" << endl;
-=======
->>>>>>> 1f19022fff1f8b30e5fba0137501b842326a0525
         max_i = i;
         max_j = j;
         max_tps = temp_tps;
       } else if (temp_crit_immunity >= 5.6 && temp.survives_worst_case_szenario() && temp_tps > max_tps) {
-<<<<<<< HEAD
-        cout << "case 3" << endl;
-=======
->>>>>>> 1f19022fff1f8b30e5fba0137501b842326a0525
         max_i = i;
         max_j = j;
         max_tps = temp_tps;
@@ -404,21 +387,13 @@ void convergent_gearing(Character *character, vector<vector<Gear>> *all_gear, un
     cout << "Dodge against level " << character->get_encounter().get_lvl() << " = " << character->get_dodge_chance() << "%" << endl;
     cout << "Parry against level " << character->get_encounter().get_lvl() << " = " << character->get_parry() << "%" << endl;
     cout << "Chance to get missed against level " << character->get_encounter().get_lvl() << " = " << character->get_missed() << "%" << endl;
-<<<<<<< HEAD
     cout << "Total avoidance against level " << character->get_encounter().get_lvl() << " = " << character->get_avoidance() << "%" << endl;
     cout << "Effective block chance against level " << character->get_encounter().get_lvl() << " = " << character->get_block() << "%" << endl;
-=======
-    cout << "Total avoidance against level" << character->get_encounter().get_lvl() << " = " << character->get_avoidance() << "%" << endl;
-    cout << "Effective block chance against level" << character->get_encounter().get_lvl() << " = " << character->get_block() << "%" << endl;
->>>>>>> 1f19022fff1f8b30e5fba0137501b842326a0525
     cout << "Block value = " << character->get_block_value() << endl;
     cout << "Reduced chance to get critical hits = " << character->red_chance_to_get_crit() << "%" << endl;
     cout << "TPS = " << character->get_tps() << endl;
     cout << "Frost resistance = " << character->primary_stats.frost_resistance + character->bonus_prim_stats.frost_resistance << endl;
-<<<<<<< HEAD
     cout << "Nature resistance = " << character->primary_stats.nature_resistance + character->bonus_prim_stats.nature_resistance << endl;
-=======
->>>>>>> 1f19022fff1f8b30e5fba0137501b842326a0525
     cout << "Survives worst case szenario against " << character->get_encounter().get_name() << ": " << character->survives_worst_case_szenario() << endl;
     cout << "Gear:" << endl;
     character->print_gear();

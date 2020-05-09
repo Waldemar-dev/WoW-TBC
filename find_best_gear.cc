@@ -451,10 +451,6 @@ int main() {
   prot_quidea1.equip(feet13);
   prot_quidea1.equip(libram2);
   prot_quidea1.compute_stats();
-<<<<<<< HEAD
-=======
-  cout << "base q eff hp:" << prot_quidea1.get_eff_hp() << endl;
->>>>>>> 1f19022fff1f8b30e5fba0137501b842326a0525
   convergent_gearing(&prot_quidea1, &all_gear);
   /*
   cout << endl;
