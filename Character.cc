@@ -346,7 +346,7 @@ double Character::get_eff_hp(double time_in_seconds_) {
   double magical_nature = (time_in_seconds * hps + hp + stamina * 10) / (1 - average_resistance("Nature"));
   double magical_shadow = (time_in_seconds * hps + hp + stamina * 10) / (1 - average_resistance("Shadow"));
 
-  double result = physical;
+  double result = magical_frost;
 
   for (map<string, unsigned int>::iterator it = talents.begin(); it != talents.end(); it++) {
     if (it->first == "Improved Righteous Fury") {

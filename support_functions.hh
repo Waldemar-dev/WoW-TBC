@@ -324,7 +324,7 @@ void convergent_gearing(Character *character, vector<vector<Gear>> *all_gear, un
                          // epic_blue_sta_gem,
                          // epic_red_dodge_gem,
                          // epic_yellow_def_gem,
-                         rare_green_sta_def_gem, rare_purple_sta_agi_gem, rare_purple_sta_dodge_gem, rare_purple_sta_sp_gem, meta1, meta2 /*, meta3*/};
+                         rare_green_sta_def_gem, rare_purple_sta_agi_gem, rare_purple_sta_dodge_gem, rare_purple_sta_sp_gem, meta1, meta2, meta3};
   double max_hp = character->get_eff_hp();
   double max_tps = character->get_tps();
   unsigned int max_i, max_j;
