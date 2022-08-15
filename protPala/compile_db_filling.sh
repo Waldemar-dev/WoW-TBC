@@ -1,0 +1,1 @@
+g++ -Wall -I/usr/include/cppconn -std=c++11 fill_gear_db.cc equipment.cc stats.cc enchantments.cc enums.cc gems.cc Character.cc buffs.cc NPCs.cc ability.cc -ltbb -o fill_db -L/usr/lib $(root-config --libs) -I$(root-config --incdir) -lmysqlcppconn && ./fill_db

@@ -1,0 +1,169 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+%opening
+\title{Finding pre-raid best in slot gear for protection paladins}
+\author{Quidea}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This article will introduce a metric to determine effective health for paladins in order to find the best tanking gear.
+\end{abstract}
+
+\section{Introduction}
+The question which tanking gear is best first arises when looking for the best pre raid best in slot (BiS) items. Many guides offer a wide variety of items and a recommendation, but the interaction of important tank stats like avoidance and stamina are complex and sometimes not intuitive as I will show later.  
+\section{Theory}
+Attacks are based on an attack table (see table \ref{tab_attack_table}) in WoW, meaning the program rolls a number between 0 and 1 or 100 respectively. If it is below the miss chance i.e. then the attack misses, otherwise one needs to see where the random number lands. 
+
+\begin{table}
+\centering
+ \begin{tabular}{|c|}
+ What will happen\\
+ \hline
+  Miss\\
+  Dodge\\
+  Parry\\
+  Glancing Blow \\
+  Block\\
+  Critical Hit\\
+  Ordinary Hit
+ \end{tabular}
+\caption{This shows the attack table used in WoW without crushing blows, since it only applies for NPCs at least 4 levels above player levels.}
+\label{tab_attack_table}
+\end{table}
+Here crushing blows will be ignored, since the NPC needs to be at least 4 levels above the player level to land a crushing blow. \\
+Entries in the attack table can be pushed off when the summed probability of the previous entries is at least 1 (or $100\%$).\\
+If an attack is parried, the attack speed of the defender is increased by $3.8\%$ for one attack. Since little gear offers expertise, this mechanic will be neglected for now. 
+\subsection{NPC}
+From Amedis' 2008 post we know that the armor of bosses is around 7700. Technically this is important for threat through white damage, but it will also be neglected for now.\\
+The attack speed of bosses is usually $2.0$, which will become important in the model section, since the amount of damage that gets blocked is dependent of the number of hits we take.\\
+The here used stats are listed in table \ref{tab_boss_stats}.
+\begin{table}
+ \centering 
+ \begin{tabular}{c|c}
+  Boss stat name& value\\
+  \hline
+  Attack Speed & 2.0\\
+  Armor&7700\\
+  Base miss chance& $5\%$\\
+  Attack Rating & $73\cdot 5=365$\\
+  Defense Rating & 365
+ \end{tabular}
+\caption{This table shows some basic stats for bosses, that i use in my calculations.}
+\label{tab_boss_stats}
+\end{table}
+\subsection{PC}
+The most important formula is the conversion from rating to probability. I take the formula from Whitetooth's Rating Buster:
+\begin{align*}
+ p_\mathrm{stat}&=\mathrm{rating}\cdot h/f_\mathrm{stat}\cdot10^{-2}\\
+ h&=-\frac{3}{82}\mathrm{level}_\mathrm{player}+\frac{131}{41}\\
+ &=0.63414634\\ 
+\end{align*}
+Where the parameters for $f$ can be found in table \ref{tab_f}. Additionaly some base stats can be seen in table \ref{tab_player_base_stats}. Usually I oriented myself on Draenei, since my character is one. It may cause slight deviations for other races, but I assume for now, that these are rather minor, because if for example the dwarven armor racial would be a huge  difference, then the software would already favor armor over other stats without the racial active.\\ The conversion rates of primary attributes into secondary can be seen in table \ref{tab_conversion}.
+\begin{table}
+ \centering 
+ \begin{tabular}{c|c}
+  Stat&$f_\mathrm{stat}$\\
+  \hline 
+  Expertise&2.5\\
+  Defense&1.5\\
+  Dodge&13.8\\
+  Parry&13.8\\
+  Block&5\\
+  Hit&10\\
+  Crit&14\\
+  Haste&10\\
+  Spell Hit &8\\
+  Resilience&28.75\\
+  Armor Penetration&3.756097412
+ \end{tabular}
+\caption{The used parameters used to convert rating into probability as determined in Whitetooth's Rating Buster.}
+\label{tab_f}
+\end{table}
+
+
+\begin{table}
+ \centering 
+ \begin{tabular}{c|c}
+ Stat&Value\\
+ \hline
+  Base Block Chance& $5\%$\\
+  Base Parry Chance &$5\%$\\
+  Base Dodge Chance & $3.4943\%$\\
+  Base Spell Crit Chance & $3.336\%$
+ \end{tabular}
+\caption{This table shows the base stats of the player character.}
+\label{tab_player_base_stats}
+\end{table}
+
+\begin{table}
+ \centering 
+ \begin{tabular}{c|c}
+  Stat&Conversion\\
+  \hline 
+  1 Strength&0.5 Block Value\\
+  1 Agility&2 Armor, 0.04$\%$ dodge\\
+  1 Stamina&10 HP\\
+  1 Intellect& 15 MP, $\frac{1}{80.05}\%$ Spell Crit\\
+  1 Spirit&ignored\\
+ \end{tabular}
+\caption{This table shows the conversion rates from primary to secondary attributes without the influence of talents for a level 70 paladin.}
+\label{tab_conversion}
+\end{table}
+
+
+We also need to compute the dodge chance like this:
+\begin{align*}
+ p_\mathrm{dodge}&=a_u+d_u+f_u+\mathrm{base}\\
+ a_u&=\mathrm{agility}\cdot 4\cdot 10^{-4}\\
+ d_u&=\mathrm{rating}_\mathrm{dodge}\cdot h/f_\mathrm{dodge}\cdot 10^{-2}\\
+ f_u&=\max((\mathrm{rating}_\mathrm{defense}\cdot h/f_\mathrm{defense}+\mathrm{player}_\mathrm{DS}-5\cdot73)\cdot 4\cdot 10^{-4},0)
+\end{align*}
+The probabilities for parry and block chance are computed equivalently.\\
+Next the chance to get a critical hit is important. The formula used is:
+\begin{align*}
+ 100p_\mathrm{critted}&=(\mathrm{rating}_\mathrm{defense}\cdot h/f_\mathrm{defense}+\mathrm{player}_\mathrm{defense}-5\cdot73)\cdot 4\cdot10^{-4}+\mathrm{rating}_\mathrm{resilience}\cdot0.025339367
+\end{align*}
+
+To get the block value we use the formula:
+\begin{align*}
+ \mathrm{block}&=\left(\mathrm{BlockValue}+\frac{\mathrm{player}_\mathrm{strength}}{2}\right)\cdot 1.3
+\end{align*}
+Where we use the $1.3$ factor resulting from the talent ``Shield Specialization''. In the program the actual amount of points into this talent can be specified and the formula will of course adjust itself.\\
+If the difference between enemy's defense and player's weapon skill is less than or equal to 10, the base miss chance computes as:
+\begin{align*}
+ p_\mathrm{miss}&=0.05+(\mathrm{enemy}_\mathrm{DS}-\mathrm{player}_\mathrm{WS})\cdot10^{-3}
+\end{align*}
+else one gets:
+\begin{align*}
+ p_\mathrm{miss}&=0.06+(\mathrm{enemy}_\mathrm{DS}-\mathrm{player}_\mathrm{WS}-10)\cdot4\cdot10^{-3}
+\end{align*}
+Luckily diminishing returns were introduced in WOTLK and in TBC we can ignore them. 
+\subsection{Model}
+In the past there was the effective health 
+\begin{align*}
+ h_\mathrm{eff}&=\frac{\mathrm{health}}{\mathrm{armor}}
+\end{align*}
+
+as measure for tanking ability. It would should what big of a hit the tank would have been able to take or the total damage of many small hits. As we see it does not account for avoidance, self healing and blocking, what can be included like this:
+\begin{align*}
+ h_\mathrm{eff}&=\frac{\mathrm{health}+\mathrm{SelfHeal}+\mathrm{BlockTerm}}{\mathrm{armor}\cdot(1-\mathrm{avoidance})}\\
+ \mathrm{SelfHeal}&=\mathrm{hps}\cdot \mathrm{EncounterLength}\\
+ \mathrm{BlockTerm}&=\mathrm{BlockChance}\cdot\mathrm{BlockValue}\cdot\mathrm{EnemyAttackSpeed}\cdot \mathrm{EncounterLength}\\
+ \mathrm{avoidance}&=\mathrm{DodgeChance}+\mathrm{ParryChance}+\mathrm{MissedChance}
+\end{align*}
+Instead of explaining, I will show in the next section that this formula describes the statistical average of the effective health.
+\section{Simulation}
+There are two reasons for a simulation:
+\begin{enumerate}
+ \item Compare the model with (simulated) data
+ \item Determine the effective block chance increase provided by the talent ``Redoubt''
+\end{enumerate}
+
+\section{Results}
+\section{Outlock}
+\end{document}

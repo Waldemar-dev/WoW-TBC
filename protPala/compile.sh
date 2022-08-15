@@ -1,0 +1,2 @@
+#g++ -g -std=c++11 fill_gear_db.cc buffs.cc enchantments.cc gems.cc stats.cc Character.cc  equipment.cc ability.cc NPCs.cc -ltbb $(root-config --libs) -I$(root-config --incdir) -o fill_db && ./fill_db
+g++ -ggdb3 -O0 -pg -Wall -I/usr/include/cppconn -std=c++11 find_best_gear.cc enums.cc buffs.cc enchantments.cc gems.cc stats.cc Character.cc  equipment.cc ability.cc NPCs.cc -ltbb -o gear_optimizer $(root-config --libs) -I$(root-config --incdir) -lmysqlcppconn && ./gear_optimizer
